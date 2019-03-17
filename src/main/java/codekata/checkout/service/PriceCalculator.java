@@ -15,7 +15,7 @@ public class PriceCalculator {
         Double total = 0.0;
         for (Item item : basketItems.keySet()) {
             int itemQuantity = basketItems.get(item);
-
+            //TODO : Extract predicate to a constant
             final Predicate<Promotion> promotionPredicate = promotion -> promotion.getItem().equals(item);
             final Optional<Promotion> promotionOptional = currentPromotions.stream().filter(promotionPredicate).findFirst();
 
@@ -24,6 +24,7 @@ public class PriceCalculator {
                 Promotion promotion = promotionOptional.get();
                 final int promotionQuantity = promotionOptional.get().getQuantity();
                 final Double promotionPrice = promotion.getPrice();
+                //TODO : Evaluate expresssion using a functional interface
                 if (promotionQuantity >= itemQuantity) {
                     if (promotionQuantity == itemQuantity) {
                         total += promotionPrice;

@@ -9,6 +9,12 @@ import java.util.TreeMap;
 /**
  * Simple Basket to hold the checkout transaction
  */
+//TODO : Basket does not currently list the promotions applied as items in th basket.
+//TODO : This is what generally we could see in the supermarket receipt.
+//TODO : Which generally list all the items and then list the promotions for the items with negative amount
+//TODO : This can be easily achieved during price calculation by returning an Object type from PriceCalculator
+//TODO : And basket can then store the list of promotions applied for the items
+
 public class Basket {
 
     private final TreeMap<Item, Integer> basketItems;
