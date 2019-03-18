@@ -2,6 +2,7 @@ package codekata.checkout.service;
 
 import codekata.checkout.CheckoutTestDataRepository;
 import codekata.checkout.domain.Basket;
+import codekata.checkout.domain.BasketState;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

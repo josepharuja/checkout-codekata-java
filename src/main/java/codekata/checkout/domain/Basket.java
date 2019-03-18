@@ -1,7 +1,5 @@
 package codekata.checkout.domain;
 
-import codekata.checkout.service.BasketState;
-
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;

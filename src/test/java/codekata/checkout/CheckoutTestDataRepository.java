@@ -3,7 +3,7 @@ package codekata.checkout;
 import codekata.checkout.domain.Basket;
 import codekata.checkout.domain.Item;
 import codekata.checkout.domain.Promotion;
-import codekata.checkout.service.BasketState;
+import codekata.checkout.domain.BasketState;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

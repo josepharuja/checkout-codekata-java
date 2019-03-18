@@ -2,6 +2,7 @@ package codekata.checkout.service;
 
 import codekata.checkout.CheckoutTestDataRepository;
 import codekata.checkout.domain.Basket;
+import codekata.checkout.domain.BasketState;
 import codekata.checkout.domain.Item;
 import codekata.checkout.domain.Promotion;
 import org.junit.After;

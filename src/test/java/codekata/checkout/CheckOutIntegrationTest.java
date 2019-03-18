@@ -1,7 +1,7 @@
 package codekata.checkout;
 
 import codekata.checkout.domain.Basket;
-import codekata.checkout.service.BasketState;
+import codekata.checkout.domain.BasketState;
 import codekata.checkout.service.CheckoutService;
 import codekata.checkout.service.PriceCalculator;
 import codekata.checkout.service.UUIDSupplier;

@@ -1,4 +1,4 @@
-package codekata.checkout.service;
+package codekata.checkout.domain;
 
 /**
  * Enum to define the {@link codekata.checkout.domain.Basket} states
