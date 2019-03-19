@@ -1,6 +1,5 @@
 package codekata.checkout.service;
 
-import codekata.checkout.CheckoutTestDataRepository;
 import codekata.checkout.domain.AppliedDiscount;
 import codekata.checkout.domain.Basket;
 import codekata.checkout.domain.BasketState;
@@ -79,7 +78,7 @@ public class BasketTest {
         basket.addItem(itemA());
         basket.addItem(itemB());
         TreeMap<Promotion, AppliedDiscount> appliedDiscounts = new TreeMap<>();
-        appliedDiscounts.put(CheckoutTestDataRepository.getItemAPromotion(),new AppliedDiscount(3,20.0));
+        appliedDiscounts.put(getItemAPromotion(),new AppliedDiscount(3,20.0));
         basket.setAppliedDiscounts(appliedDiscounts);
 
 
