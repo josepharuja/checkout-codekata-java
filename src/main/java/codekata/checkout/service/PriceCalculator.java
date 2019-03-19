@@ -1,45 +1,38 @@
 package codekata.checkout.service;
 
+import codekata.checkout.domain.AppliedDiscount;
 import codekata.checkout.domain.Item;
 import codekata.checkout.domain.Promotion;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.SortedMap;
-import java.util.function.Predicate;
+import java.util.TreeMap;
 
 public class PriceCalculator {
 
-    public Double calculateTotal(SortedMap<Item, Integer> basketItems, List<Promotion> currentPromotions) {
 
-        Double total = 0.0;
-        for (Item item : basketItems.keySet()) {
-            int itemQuantity = basketItems.get(item);
-            //TODO : Extract predicate to a constant
-            final Predicate<Promotion> promotionPredicate = promotion -> promotion.getItem().equals(item);
-            final Optional<Promotion> promotionOptional = currentPromotions.stream().filter(promotionPredicate).findFirst();
+    public TreeMap<Promotion, AppliedDiscount> calculateDiscounts(SortedMap<Item, Integer> basketItems, List<Promotion> currentPromotions) {
 
-            final Double itemPrice = item.getPrice();
-            if (promotionOptional.isPresent()) {
-                Promotion promotion = promotionOptional.get();
-                final int promotionQuantity = promotionOptional.get().getQuantity();
-                final Double promotionPrice = promotion.getPrice();
-                //TODO : Evaluate expresssion using a functional interface
-                if (promotionQuantity >= itemQuantity) {
-                    if (promotionQuantity == itemQuantity) {
-                        total += promotionPrice;
+        TreeMap<Promotion, AppliedDiscount> appliedDiscountTreeMap = new TreeMap<>();
+        for (Promotion promotion : currentPromotions) {
+            final int promotionQuantity = promotion.getQuantity();
+            final double promotionPrice = promotion.getPrice();
+            if (basketItems.containsKey(promotion.getItem())) {
+                final Integer itemQuantity = basketItems.get(promotion.getItem());
+                if (itemQuantity >= promotionQuantity) {
+                    final Double itemPrice = promotion.getItem().getPrice();
+                    if (itemQuantity == promotionQuantity) {
+                        appliedDiscountTreeMap.put(promotion, new AppliedDiscount(promotionQuantity, (itemQuantity * itemPrice) - promotionPrice));
                     } else {
-                        total += (itemQuantity) * itemPrice;
+                        final double totalItemPriceInPromotion = (itemQuantity * itemPrice) - ((itemQuantity % promotionQuantity) * itemPrice);
+                        final double totalPromotionPrice = (itemQuantity / promotionQuantity) * promotionPrice;
+                        final double discount = totalItemPriceInPromotion - totalPromotionPrice;
+                        appliedDiscountTreeMap.put(promotion, new AppliedDiscount(promotionQuantity, discount));
                     }
-                } else {
-                    total += ((itemQuantity % promotionQuantity) * itemPrice) + ((itemQuantity / promotionQuantity) * promotionPrice);
                 }
-            } else {
-                total += (itemQuantity) * itemPrice;
             }
+
         }
-
-        return total;
+        return appliedDiscountTreeMap;
     }
-
 }

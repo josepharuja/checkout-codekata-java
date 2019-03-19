@@ -1,9 +1,9 @@
 package codekata.checkout;
 
 import codekata.checkout.domain.Basket;
+import codekata.checkout.domain.BasketState;
 import codekata.checkout.domain.Item;
 import codekata.checkout.domain.Promotion;
-import codekata.checkout.domain.BasketState;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -35,14 +35,16 @@ public class CheckoutTestDataRepository {
         return Arrays.asList(getItemAPromotion(), getItemBPromotion());
     }
 
-    private static Promotion getItemBPromotion() {
+    public static Promotion getItemAPromotion() {
+
+        return new Promotion(itemA(), 3, 130.0, LocalDateTime.now());
+    }
+
+    public static Promotion getItemBPromotion() {
 
         return new Promotion(itemB(), 2, 45.0, LocalDateTime.now());
     }
 
-    private static Promotion getItemAPromotion() {
-        return new Promotion(itemA(), 3, 130.0, LocalDateTime.now());
-    }
 
     public static String anUUID() {
         return UUID.randomUUID().toString();
@@ -55,7 +57,6 @@ public class CheckoutTestDataRepository {
     public static Basket aBasketWithItemAWithTotal() {
         Basket basket = new Basket(BasketState.IN_PROGRESS);
         basket.addItem(itemA());
-        basket.setTotal(50.0);
         return basket;
     }
 
@@ -63,7 +64,6 @@ public class CheckoutTestDataRepository {
         Basket basket = new Basket(BasketState.IN_PROGRESS);
         basket.addItem(itemA());
         basket.addItem(itemA());
-        basket.setTotal(100.0);
         return basket;
     }
 
@@ -72,7 +72,6 @@ public class CheckoutTestDataRepository {
         basket.addItem(itemA());
         basket.addItem(itemA());
         basket.addItem(itemA());
-        basket.setTotal(130.0);
         return basket;
     }
 
@@ -116,7 +115,16 @@ public class CheckoutTestDataRepository {
         basket.addItem(itemA());
         basket.addItem(itemB());
         basket.addItem(itemB());
-        basket.setTotal(175.0);
+        return basket;
+    }
+
+    public static Basket aBasketWithThreeItemAandTwoItemB() {
+        Basket basket = new Basket(BasketState.IN_PROGRESS);
+        basket.addItem(itemA());
+        basket.addItem(itemA());
+        basket.addItem(itemA());
+        basket.addItem(itemB());
+        basket.addItem(itemB());
         return basket;
     }
 }

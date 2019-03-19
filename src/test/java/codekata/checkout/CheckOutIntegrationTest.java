@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 
+import static codekata.checkout.CheckoutTestDataRepository.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CheckOutIntegrationTest {
@@ -19,22 +20,22 @@ public class CheckOutIntegrationTest {
     @Test
     public void validateCheckoutWithPromotions() {
         CheckoutService checkoutService = new CheckoutService(uuidSupplier, priceCalculator);
-        final String basketUUID = checkoutService.startTransaction(CheckoutTestDataRepository.getPromotionsForThisWeek());
+        final String basketUUID = checkoutService.startTransaction(getPromotionsForThisWeek());
 
 
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemC());
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemA());
+        checkoutService.scanItem(basketUUID, itemC());
+        checkoutService.scanItem(basketUUID, itemA());
 
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemB());
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemB());
-
-
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemD());
+        checkoutService.scanItem(basketUUID, itemB());
+        checkoutService.scanItem(basketUUID, itemB());
 
 
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemA());
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemA());
-        checkoutService.scanItem(basketUUID, CheckoutTestDataRepository.itemA());
+        checkoutService.scanItem(basketUUID, itemD());
+
+
+        checkoutService.scanItem(basketUUID, itemA());
+        checkoutService.scanItem(basketUUID, itemA());
+        checkoutService.scanItem(basketUUID, itemA());
 
         final Basket basket = checkoutService.getBasket(basketUUID);
         assertThat(basket.getTotal()).isNotNull().isEqualTo(260);
@@ -50,17 +51,17 @@ public class CheckOutIntegrationTest {
         CheckoutService checkoutService = new CheckoutService(uuidSupplier, priceCalculator);
         final String baseketUUID = checkoutService.startTransaction(Collections.emptyList());
 
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemB());
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemA());
+        checkoutService.scanItem(baseketUUID, itemB());
+        checkoutService.scanItem(baseketUUID, itemA());
 
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemB());
+        checkoutService.scanItem(baseketUUID, itemB());
 
 
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemC());
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemD());
+        checkoutService.scanItem(baseketUUID, itemC());
+        checkoutService.scanItem(baseketUUID, itemD());
 
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemA());
-        checkoutService.scanItem(baseketUUID, CheckoutTestDataRepository.itemA());
+        checkoutService.scanItem(baseketUUID, itemA());
+        checkoutService.scanItem(baseketUUID, itemA());
 
         final Basket basket = checkoutService.getBasket(baseketUUID);
         assertThat(basket.getTotal()).isNotNull().isEqualTo(245);

@@ -1,9 +1,6 @@
 package codekata.checkout.service;
 
-import codekata.checkout.domain.Basket;
-import codekata.checkout.domain.BasketState;
-import codekata.checkout.domain.Item;
-import codekata.checkout.domain.Promotion;
+import codekata.checkout.domain.*;
 
 import java.util.*;
 
@@ -50,8 +47,8 @@ public class CheckoutService {
     public Basket scanItem(String basketUUID, Item item) {
         final Basket basket = basketMap.get(basketUUID);
         basket.addItem(item);
-        final SortedMap<Item, Integer> basketItems = basket.getBasketItems();
-        basket.setTotal(priceCalculator.calculateTotal(basketItems, currentPromotions));
+        final TreeMap<Promotion, AppliedDiscount> appliedDiscounts = priceCalculator.calculateDiscounts(basket.getBasketItems(), currentPromotions);
+        basket.setAppliedDiscounts(appliedDiscounts);
         return basket;
     }
 

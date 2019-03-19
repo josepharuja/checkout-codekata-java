@@ -3,36 +3,36 @@ package codekata.checkout.domain;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Simple Basket to hold the checkout transaction
  */
-//TODO : Basket does not currently list the promotions applied as items in th basket.
-//TODO : This is what generally we could see in the supermarket receipt.
-//TODO : Which generally list all the items and then list the promotions for the items with negative amount
-//TODO : This can be easily achieved during price calculation by returning an Object type from PriceCalculator
-//TODO : And basket can then store the list of promotions applied for the items
-
 public class Basket {
 
     private final TreeMap<Item, Integer> basketItems;
 
-    private BasketState basketState;
+    private TreeMap<Promotion, AppliedDiscount> appliedDiscounts;
 
-    private Double total = 0.0;
+    private BasketState basketState;
 
     public Basket(final BasketState basketState) {
         this.basketState = basketState;
         basketItems = new TreeMap<>();
+        appliedDiscounts = new TreeMap<>();
     }
 
     public Double getTotal() {
-        return total;
+        Double sum = basketItems.entrySet().stream()
+                .map(x -> x.getKey().getPrice() * x.getValue().intValue())
+                .collect(Collectors.summingDouble(Double::doubleValue));
+
+        Double discount = appliedDiscounts.values().stream()
+                .map(x -> x.getDiscount())
+                .collect(Collectors.summingDouble(Double::doubleValue));
+        return sum - discount;
     }
 
-    public void setTotal(final Double total) {
-        this.total = total;
-    }
 
     public void addItem(final Item item) {
         if (!basketItems.containsKey(item))
@@ -54,25 +54,35 @@ public class Basket {
         this.basketState = basketState;
     }
 
+    public void setAppliedDiscounts(TreeMap<Promotion, AppliedDiscount> appliedDiscounts) {
+        this.appliedDiscounts = appliedDiscounts;
+    }
+
+    public SortedMap<Promotion, AppliedDiscount> getAppliedDiscounts() {
+        return appliedDiscounts;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Basket{");
+        sb.append("basketItems=").append(basketItems);
+        sb.append(", basketState=").append(basketState);
+        sb.append(", total=").append(getTotal());
+        sb.append('}');
+        return sb.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Basket basket = (Basket) o;
         return Objects.equals(basketItems, basket.basketItems) &&
-                Objects.equals(total, basket.total);
+                basketState == basket.basketState;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(basketItems, total);
-    }
-
-    @Override
-    public String toString() {
-        return "Basket{" + "basketItems=" + basketItems +
-                ", basketState=" + basketState +
-                ", total=" + total +
-                '}';
+        return Objects.hash(basketItems, basketState);
     }
 }

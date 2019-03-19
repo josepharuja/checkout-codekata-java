@@ -45,6 +45,6 @@ public class Item implements Comparable<Item> {
 
     @Override
     public int compareTo(Item other) {
-        return (this.skuCode.compareTo(other.skuCode));
+        return (this.price.compareTo(other.price));
     }
 }
