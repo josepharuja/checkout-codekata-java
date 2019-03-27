@@ -3,7 +3,6 @@ package codekata.checkout.domain;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * Simple Basket to hold the checkout transaction
@@ -24,12 +23,10 @@ public class Basket {
 
     public Double getTotal() {
         Double sum = basketItems.entrySet().stream()
-                .map(x -> x.getKey().getPrice() * x.getValue().intValue())
-                .collect(Collectors.summingDouble(Double::doubleValue));
+                .map(x -> x.getKey().getPrice() * x.getValue()).mapToDouble(Double::doubleValue).sum();
 
         Double discount = appliedDiscounts.values().stream()
-                .map(x -> x.getDiscount())
-                .collect(Collectors.summingDouble(Double::doubleValue));
+                .map(AppliedDiscount::getDiscount).mapToDouble(Double::doubleValue).sum();
         return sum - discount;
     }
 

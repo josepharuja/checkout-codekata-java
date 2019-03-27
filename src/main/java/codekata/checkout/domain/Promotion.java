@@ -1,6 +1,5 @@
 package codekata.checkout.domain;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -70,7 +69,7 @@ public class Promotion implements Comparable<Promotion> {
     }
 
     @Override
-    public int compareTo(@NotNull Promotion o) {
+    public int compareTo(Promotion o) {
         return (this.price.compareTo(o.price));
     }
 }
